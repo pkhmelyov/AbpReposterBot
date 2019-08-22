@@ -52,6 +52,13 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
                         url: "About",
                         icon: "info"
                     )
+                ).AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Posts,
+                        L("Posts"),
+                        url: "Posts",
+                        icon: "question_answer"
+                    )
                 ).AddItem( // Menu items below is just for demonstration!
                     new MenuItemDefinition(
                         "MultiLevelMenu",

@@ -1,0 +1,22 @@
+@using pkhmelyov.AbpReposterBot.Web.Startup
+
+@{
+    ViewBag.CurrentPageName = PageNames.Posts;
+}
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    @L("Posts")
+                </h2>
+            </div>
+        </div>
+        <div class="body table-responsive">
+            <table class="table"></table>
+            <a asp-controller="Posts" asp-action="Create" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+</div>
