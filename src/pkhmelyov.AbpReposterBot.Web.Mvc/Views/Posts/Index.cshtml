@@ -1,5 +1,7 @@
+@using Abp.Application.Services.Dto
+@using pkhmelyov.AbpReposterBot.Posts.Dtos
 @using pkhmelyov.AbpReposterBot.Web.Startup
-
+@model ListResultDto<PostListDto>
 @{
     ViewBag.CurrentPageName = PageNames.Posts;
 }
@@ -13,7 +15,12 @@
             </div>
         </div>
         <div class="body table-responsive">
-            <table class="table"></table>
+            <table class="table">
+                @foreach(var post in Model.Items)
+                {
+                    <tr><td>@post.Body</td></tr>
+                }
+            </table>
             <a asp-controller="Posts" asp-action="Create" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right">
                 <i class="material-icons">add</i>
             </a>

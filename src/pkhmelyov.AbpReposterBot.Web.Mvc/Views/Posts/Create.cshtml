@@ -1,0 +1,11 @@
+@using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Posts
+@model PostsCreateViewModel
+
+<h2>Create new post</h2>
+
+<form asp-controller="Posts" asp-action="Create" method="post">
+    <div class="form-group">
+        <textarea asp-for="Body" class="form-control"></textarea>
+    </div>
+    <input type="submit" value="Create" class="btn btn-primary" />
+</form>
