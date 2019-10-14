@@ -3,6 +3,7 @@ using Abp.Zero.EntityFrameworkCore;
 using pkhmelyov.AbpReposterBot.Authorization.Roles;
 using pkhmelyov.AbpReposterBot.Authorization.Users;
 using pkhmelyov.AbpReposterBot.MultiTenancy;
+using pkhmelyov.AbpReposterBot.Posts;
 
 namespace pkhmelyov.AbpReposterBot.EntityFrameworkCore
 {
@@ -14,5 +15,7 @@ namespace pkhmelyov.AbpReposterBot.EntityFrameworkCore
             : base(options)
         {
         }
+
+        public DbSet<Post> Posts { get; set; }
     }
 }
