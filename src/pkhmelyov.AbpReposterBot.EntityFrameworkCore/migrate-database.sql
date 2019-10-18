@@ -1035,3 +1035,23 @@ BEGIN
     VALUES ('20190808174122_AddedPosts', '2.2.4-servicing-10062');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191018164446_AddedChannels') THEN
+    CREATE TABLE "Channels" (
+        "Id" bigserial NOT NULL,
+        "Title" text NULL,
+        "Own" boolean NOT NULL,
+        CONSTRAINT "PK_Channels" PRIMARY KEY ("Id")
+    );
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191018164446_AddedChannels') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20191018164446_AddedChannels', '2.2.4-servicing-10062');
+    END IF;
+END $$;

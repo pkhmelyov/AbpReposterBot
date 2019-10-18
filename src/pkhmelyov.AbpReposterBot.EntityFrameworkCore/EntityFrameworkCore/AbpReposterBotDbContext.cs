@@ -9,13 +9,12 @@ namespace pkhmelyov.AbpReposterBot.EntityFrameworkCore
 {
     public class AbpReposterBotDbContext : AbpZeroDbContext<Tenant, Role, User, AbpReposterBotDbContext>
     {
-        /* Define a DbSet for each entity of the application */
-        
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Channel> Channels { get; set; }
+
         public AbpReposterBotDbContext(DbContextOptions<AbpReposterBotDbContext> options)
             : base(options)
         {
         }
-
-        public DbSet<Post> Posts { get; set; }
     }
 }
