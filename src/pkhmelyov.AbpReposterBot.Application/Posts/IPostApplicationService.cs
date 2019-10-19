@@ -8,6 +8,6 @@ namespace pkhmelyov.AbpReposterBot.Posts
     public interface IPostApplicationService : IApplicationService
     {
         Task<ListResultDto<PostListDto>> GetAll();
-        Task<Post> Create(CreatePostInput input);
+        Task<PostListDto> Create(CreatePostInput input);
     }
 }

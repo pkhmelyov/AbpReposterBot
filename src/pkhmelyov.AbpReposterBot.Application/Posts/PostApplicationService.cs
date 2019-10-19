@@ -23,10 +23,11 @@ namespace pkhmelyov.AbpReposterBot.Posts
             return new ListResultDto<PostListDto>(ObjectMapper.Map<List<PostListDto>>(list));
         }
 
-        public async Task<Post> Create(CreatePostInput input)
+        public async Task<PostListDto> Create(CreatePostInput input)
         {
             var post = ObjectMapper.Map<Post>(input);
-            return await _postRepository.InsertAsync(post);
+            var result = await _postRepository.InsertAsync(post);
+            return ObjectMapper.Map<PostListDto>(result);
         }
     }
 }
