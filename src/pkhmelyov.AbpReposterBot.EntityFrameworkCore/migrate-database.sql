@@ -1055,3 +1055,26 @@ BEGIN
     VALUES ('20191018164446_AddedChannels', '2.2.4-servicing-10062');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191019202108_AddedTelegramUsers') THEN
+    CREATE TABLE "TelegramUsers" (
+        "Id" bigserial NOT NULL,
+        "IsBot" boolean NOT NULL,
+        "FirstName" text NULL,
+        "LastName" text NULL,
+        "Username" text NULL,
+        "LanguageCode" text NULL,
+        CONSTRAINT "PK_TelegramUsers" PRIMARY KEY ("Id")
+    );
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191019202108_AddedTelegramUsers') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20191019202108_AddedTelegramUsers', '2.2.4-servicing-10062');
+    END IF;
+END $$;
