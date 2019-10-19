@@ -13,7 +13,12 @@ using pkhmelyov.AbpReposterBot.Configuration;
 using pkhmelyov.AbpReposterBot.Identity;
 using pkhmelyov.AbpReposterBot.Web.Resources;
 using Abp.AspNetCore.SignalR.Hubs;
-
+using pkhmelyov.AbpReposterBot.Web.Mvc.Bot;
+using Telegram.Bot.Framework;
+using pkhmelyov.AbpReposterBot.Web.Mvc.Options;
+using Telegram.Bot.Framework.Abstractions;
+using pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers;
+using pkhmelyov.AbpReposterBot.Web.Mvc;
 
 namespace pkhmelyov.AbpReposterBot.Web.Startup
 {
@@ -40,6 +45,14 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
 
             services.AddSignalR();
 
+            services.AddTransient<ReposterBot>()
+                .Configure<BotOptions<ReposterBot>>(_appConfiguration.GetSection("ReposterBot"))
+                .Configure<CustomBotOptions<ReposterBot>>(_appConfiguration.GetSection("ReposterBot"))
+                .AddScoped<GenericHandler>()
+                .AddScoped<SaveTelegramUserDetails>()
+                .AddScoped<SaveChannelDetails>()
+                .AddScoped<TextMessageHandler>();
+
             // Configure Abp and Dependency Injection
             return services.AddAbp<AbpReposterBotWebMvcModule>(
                 // Configure Log4Net logging
@@ -56,10 +69,16 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseTelegramBotLongPolling<ReposterBot>(ConfigureBot(), TimeSpan.FromSeconds(5));
             }
             else
             {
                 app.UseExceptionHandler("/Error");
+
+                app.UseTelegramBotWebhook<ReposterBot>(ConfigureBot());
+
+                app.EnsureWebhookSet<ReposterBot>();
             }
 
             app.UseStaticFiles();
@@ -83,6 +102,16 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private IBotBuilder ConfigureBot()
+        {
+            return new BotBuilder()
+                .Use<GenericHandler>()
+                .UseWhen<SaveTelegramUserDetails>(context => When.NewMessage(context) || When.ChannelPost(context))
+                .UseWhen<SaveChannelDetails>(context => When.ChannelPost(context) || When.ForwardFromChannel(context))
+                .UseWhen<TextMessageHandler>(When.NewTextMessage)
+                ;
         }
     }
 }
