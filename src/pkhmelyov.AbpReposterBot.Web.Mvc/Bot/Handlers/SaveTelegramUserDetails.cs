@@ -15,12 +15,12 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
             _telegramUserApplicationService = telegramUserApplicationService;
         }
 
-        public Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
+        public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested) return Task.CompletedTask;
+            if (cancellationToken.IsCancellationRequested) return;
 
             var user = context.Update.Message?.From ?? context.Update.ChannelPost?.From;
-            if (user == null) return Task.CompletedTask;
+            if (user == null) return;
 
             var telegramUserDto = new TelegramUserDto
             {
@@ -32,7 +32,9 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
                 LanguageCode = user.LanguageCode
             };
 
-            return _telegramUserApplicationService.CreateIfDoesNotExist(telegramUserDto);
+            await _telegramUserApplicationService.CreateIfDoesNotExist(telegramUserDto);
+
+            await next(context, cancellationToken);
         }
     }
 }
