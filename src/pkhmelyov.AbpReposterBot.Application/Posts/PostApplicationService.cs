@@ -29,5 +29,9 @@ namespace pkhmelyov.AbpReposterBot.Posts
             var result = await _postRepository.InsertAsync(post);
             return ObjectMapper.Map<PostListDto>(result);
         }
+
+        public async Task<PostListDto> GetById(int id) {
+            return ObjectMapper.Map<PostListDto>(await _postRepository.GetAsync(id));
+        }
     }
 }
