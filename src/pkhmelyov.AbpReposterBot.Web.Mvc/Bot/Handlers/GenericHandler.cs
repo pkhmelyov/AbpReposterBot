@@ -17,7 +17,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
-            _logger.LogCritical(JsonConvert.SerializeObject(context.Update));
+            _logger.LogInformation($"[{context.Bot.Username}]: {JsonConvert.SerializeObject(context.Update)}");
             await next(context, cancellationToken);
         }
     }

@@ -17,22 +17,21 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested) return;
-
             var user = context.Update.Message?.From ?? context.Update.ChannelPost?.From;
-            if (user == null) return;
-
-            var telegramUserDto = new TelegramUserDto
+            if (user != null)
             {
-                Id = user.Id,
-                IsBot = user.IsBot,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = user.Username,
-                LanguageCode = user.LanguageCode
-            };
+                var telegramUserDto = new TelegramUserDto
+                {
+                    Id = user.Id,
+                    IsBot = user.IsBot,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.Username,
+                    LanguageCode = user.LanguageCode
+                };
 
-            await _telegramUserApplicationService.CreateIfDoesNotExist(telegramUserDto);
+                await _telegramUserApplicationService.CreateIfDoesNotExist(telegramUserDto);
+            }
 
             await next(context, cancellationToken);
         }

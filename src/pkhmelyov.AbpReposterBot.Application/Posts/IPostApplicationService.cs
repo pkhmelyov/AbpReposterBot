@@ -9,5 +9,6 @@ namespace pkhmelyov.AbpReposterBot.Posts
     {
         Task<ListResultDto<PostListDto>> GetAll();
         Task<PostListDto> Create(CreatePostInput input);
+        Task<PostListDto> GetById(int id);
     }
 }
