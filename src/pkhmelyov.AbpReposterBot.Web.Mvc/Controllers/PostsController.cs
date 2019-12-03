@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
 using pkhmelyov.AbpReposterBot.Posts.Dtos;
+using pkhmelyov.AbpReposterBot.Web.Mvc.Bot;
 using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Posts;
+using Telegram.Bot.Types;
 
 namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
 {
@@ -12,11 +14,13 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
     {
         private readonly IPostApplicationService _postApplicationService;
         private readonly IChannelApplicationService _channelApplicationService;
+        private readonly ReposterBot _bot;
 
-        public PostsController(IPostApplicationService postApplicationService, IChannelApplicationService channelApplicationService)
+        public PostsController(IPostApplicationService postApplicationService, IChannelApplicationService channelApplicationService, ReposterBot bot)
         {
             _postApplicationService = postApplicationService;
             _channelApplicationService = channelApplicationService;
+            _bot = bot;
         }
 
         public async Task<IActionResult> Index()
@@ -47,7 +51,11 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             var post = await _postApplicationService.GetById(id);
             if (post == null) return RedirectToAction(nameof(Index));
-            var channels = await _channelApplicationService.GetAll(new PagedAndSortedResultRequestDto());
+            var channels = await _channelApplicationService.GetAll(
+                new PagedAndSortedResultRequestDto
+                {
+                    MaxResultCount = int.MaxValue
+                });
 
             return View(new PostsSendViewModel
             {
@@ -55,6 +63,19 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
                 Post = post,
                 Channels = channels
             });
+        }
+
+        [HttpPost]
+        [ActionName("Send")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendPost([FromRoute]int id, [FromForm]long channelId)
+        {
+            var post = await _postApplicationService.GetById(id);
+            if(post == null) return NotFound();
+            var channel = await _channelApplicationService.Get(new EntityDto<long>(channelId));
+            if(channel == null) return NotFound();
+            await _bot.Client.SendTextMessageAsync(new ChatId(channel.Id), post.Body);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

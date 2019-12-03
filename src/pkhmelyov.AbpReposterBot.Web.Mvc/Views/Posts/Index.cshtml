@@ -18,7 +18,9 @@
             <table class="table">
                 @foreach(var post in Model.Items)
                 {
-                    <tr><td>@post.Body</td></tr>
+                    <tr><td>@post.Body</td><td><a asp-controller="Posts" asp-action="Send" asp-route-id="@post.Id" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right">
+                Send
+            </a></td></tr>
                 }
             </table>
             <a asp-controller="Posts" asp-action="Create" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right">

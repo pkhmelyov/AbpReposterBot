@@ -4,7 +4,9 @@
     
 }
 
+<p>@Model.Post.Body</p>
+
 <form method="post" asp-controller="Posts" asp-action="Send" asp-route-id="@Model.Id">
-    <select asp-></select>
-    <input type="submit" />
+    <select asp-for="ChannelId" asp-items="@Model.ChannelItems"></select>
+    <input type="submit" value="Send" />
 </form>
