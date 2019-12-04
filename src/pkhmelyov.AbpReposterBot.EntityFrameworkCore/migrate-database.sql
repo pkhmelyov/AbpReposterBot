@@ -1078,3 +1078,25 @@ BEGIN
     VALUES ('20191019202108_AddedTelegramUsers', '2.2.4-servicing-10062');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191204204411_AddedSchedule') THEN
+    CREATE TABLE "ScheduleItems" (
+        "Id" serial NOT NULL,
+        "PostId" integer NOT NULL,
+        "ChannelId" bigint NOT NULL,
+        "ScheduleDate" timestamp without time zone NOT NULL,
+        "Done" boolean NOT NULL,
+        CONSTRAINT "PK_ScheduleItems" PRIMARY KEY ("Id")
+    );
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191204204411_AddedSchedule') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20191204204411_AddedSchedule', '2.2.4-servicing-10062');
+    END IF;
+END $$;

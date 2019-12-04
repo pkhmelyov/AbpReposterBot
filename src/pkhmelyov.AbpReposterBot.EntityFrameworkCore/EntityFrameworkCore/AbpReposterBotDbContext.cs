@@ -12,6 +12,7 @@ namespace pkhmelyov.AbpReposterBot.EntityFrameworkCore
         public DbSet<Post> Posts { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<TelegramUser> TelegramUsers { get; set; }
+        public DbSet<ScheduleItem> ScheduleItems { get; set; }
 
         public AbpReposterBotDbContext(DbContextOptions<AbpReposterBotDbContext> options)
             : base(options)

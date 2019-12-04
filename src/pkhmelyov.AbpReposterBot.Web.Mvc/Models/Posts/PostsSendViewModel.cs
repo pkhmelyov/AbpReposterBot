@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,9 +19,14 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Models.Posts
 
         public long ChannelId { get; set; }
 
+        public bool Schedule { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? ScheduleDate { get; set; }
+
         public IEnumerable<SelectListItem> ChannelItems
         {
-            get => Channels.Items.Select(x => new SelectListItem
+            get => Channels?.Items.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Title,

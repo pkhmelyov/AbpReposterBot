@@ -7,6 +7,17 @@
 <p>@Model.Post.Body</p>
 
 <form method="post" asp-controller="Posts" asp-action="Send" asp-route-id="@Model.Id">
-    <select asp-for="ChannelId" asp-items="@Model.ChannelItems"></select>
+    <div>
+        <select asp-for="ChannelId" asp-items="@Model.ChannelItems"></select>
+    </div>
+    <div>
+        <input asp-for="Schedule" />
+        <label asp-for="Schedule"></label>
+    </div>
+    <div>
+        <input asp-for="ScheduleDate" />
+        <label asp-for="ScheduleDate"></label>
+    </div>
+
     <input type="submit" value="Send" />
 </form>

@@ -68,12 +68,21 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         [HttpPost]
         [ActionName("Send")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendPost([FromRoute]int id, [FromForm]long channelId)
+        public async Task<IActionResult> SendPost([FromRoute]int id, [FromForm, Bind(nameof(PostsSendViewModel.ChannelId), nameof(PostsSendViewModel.Schedule), nameof(PostsSendViewModel.ScheduleDate))]PostsSendViewModel model)
         {
+            if (model.Schedule)
+            {
+                return Content($@"
+Id: {model.Id}
+ChannelId: {model.ChannelId}
+Schedule: {model.Schedule}
+ScheduleDate: {model.ScheduleDate.GetValueOrDefault().ToString("dd.MM.yyyy HH:mm:ss")}
+");
+            }
             var post = await _postApplicationService.GetById(id);
-            if(post == null) return NotFound();
-            var channel = await _channelApplicationService.Get(new EntityDto<long>(channelId));
-            if(channel == null) return NotFound();
+            if (post == null) return NotFound();
+            var channel = await _channelApplicationService.Get(new EntityDto<long>(model.ChannelId));
+            if (channel == null) return NotFound();
             await _bot.Client.SendTextMessageAsync(new ChatId(channel.Id), post.Body);
             return RedirectToAction(nameof(Index));
         }
