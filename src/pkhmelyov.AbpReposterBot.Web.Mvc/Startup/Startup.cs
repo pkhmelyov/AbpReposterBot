@@ -110,7 +110,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
                 .Use<GenericHandler>()
                 .UseWhen<SaveTelegramUserDetails>(context => When.NewMessage(context) || When.ChannelPost(context))
                 .UseWhen<SaveChannelDetails>(context => When.ChannelPost(context) || When.ForwardFromChannel(context))
-                .UseWhen<TextMessageHandler>(context => When.NewMessage(context) || When.ChannelPost(context))
+                .UseWhen<TextMessageHandler>(context => When.NewMessage(context) || When.ForwardFromChannel(context))
                 ;
         }
     }

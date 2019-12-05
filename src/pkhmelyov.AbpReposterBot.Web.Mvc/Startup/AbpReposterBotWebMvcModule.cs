@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using pkhmelyov.AbpReposterBot.Configuration;
+using Abp.Threading.BackgroundWorkers;
+using pkhmelyov.AbpReposterBot.Web.Mvc.Workers;
 
 namespace pkhmelyov.AbpReposterBot.Web.Startup
 {
@@ -26,6 +28,12 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(AbpReposterBotWebMvcModule).GetAssembly());
+        }
+
+        public override void PostInitialize()
+        {
+            var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
+            workManager.Add(IocManager.Resolve<ReposterWorker>());
         }
     }
 }

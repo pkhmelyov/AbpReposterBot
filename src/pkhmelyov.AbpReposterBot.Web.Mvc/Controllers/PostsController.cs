@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
+using Abp.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
@@ -10,17 +11,20 @@ using Telegram.Bot.Types;
 
 namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
 {
+    [AbpMvcAuthorize]
     public class PostsController : AbpReposterBotControllerBase
     {
         private readonly IPostApplicationService _postApplicationService;
         private readonly IChannelApplicationService _channelApplicationService;
+        private readonly IScheduleItemApplicationService _scheduleService;
         private readonly ReposterBot _bot;
 
-        public PostsController(IPostApplicationService postApplicationService, IChannelApplicationService channelApplicationService, ReposterBot bot)
+        public PostsController(IPostApplicationService postApplicationService, IChannelApplicationService channelApplicationService, ReposterBot bot, IScheduleItemApplicationService scheduleService)
         {
             _postApplicationService = postApplicationService;
             _channelApplicationService = channelApplicationService;
             _bot = bot;
+            _scheduleService = scheduleService;
         }
 
         public async Task<IActionResult> Index()
@@ -70,14 +74,14 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendPost([FromRoute]int id, [FromForm, Bind(nameof(PostsSendViewModel.ChannelId), nameof(PostsSendViewModel.Schedule), nameof(PostsSendViewModel.ScheduleDate))]PostsSendViewModel model)
         {
-            if (model.Schedule)
+            if (model.Schedule && model.ScheduleDate.HasValue)
             {
-                return Content($@"
-Id: {model.Id}
-ChannelId: {model.ChannelId}
-Schedule: {model.Schedule}
-ScheduleDate: {model.ScheduleDate.GetValueOrDefault().ToString("dd.MM.yyyy HH:mm:ss")}
-");
+                await _scheduleService.Create(new ScheduleItemDto{
+                    PostId = id,
+                    ChannelId = model.ChannelId,
+                    ScheduleDate = model.ScheduleDate.Value
+                });
+                return RedirectToAction(nameof(Index));
             }
             var post = await _postApplicationService.GetById(id);
             if (post == null) return NotFound();
