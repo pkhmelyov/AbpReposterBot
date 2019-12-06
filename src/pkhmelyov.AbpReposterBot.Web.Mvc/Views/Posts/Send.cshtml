@@ -1,3 +1,5 @@
+@using Abp.Timing
+
 @model pkhmelyov.AbpReposterBot.Web.Mvc.Models.Posts.PostsSendViewModel
 
 @{
@@ -21,3 +23,5 @@
 
     <input type="submit" value="Send" />
 </form>
+
+Server Time: @Clock.Now.ToString("yyyy-MM-dd HH:mm:ss")
