@@ -19,6 +19,7 @@ using pkhmelyov.AbpReposterBot.Web.Mvc.Options;
 using Telegram.Bot.Framework.Abstractions;
 using pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers;
 using pkhmelyov.AbpReposterBot.Web.Mvc;
+using Abp.Timing;
 
 namespace pkhmelyov.AbpReposterBot.Web.Startup
 {
@@ -64,6 +65,8 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            Clock.Provider = ClockProviders.Utc;
+
             app.UseAbp(); // Initializes ABP framework.
 
             if (env.IsDevelopment())

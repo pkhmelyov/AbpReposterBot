@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.AspNetCore.Mvc.Authorization;
+using Abp.Timing;
 using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
@@ -76,10 +78,11 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             if (model.Schedule && model.ScheduleDate.HasValue)
             {
+                model.ScheduleDate = DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Local);
                 await _scheduleService.Create(new ScheduleItemDto{
                     PostId = id,
                     ChannelId = model.ChannelId,
-                    ScheduleDate = model.ScheduleDate.Value
+                    ScheduleDate = Clock.Normalize(model.ScheduleDate.Value)
                 });
                 return RedirectToAction(nameof(Index));
             }
