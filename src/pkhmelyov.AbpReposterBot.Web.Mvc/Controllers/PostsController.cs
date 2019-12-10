@@ -78,11 +78,10 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             if (model.Schedule && model.ScheduleDate.HasValue)
             {
-                model.ScheduleDate = DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Local);
-                await _scheduleService.Create(new ScheduleItemDto{
+                await _scheduleService.Create(new ScheduleItemDto {
                     PostId = id,
                     ChannelId = model.ChannelId,
-                    ScheduleDate = Clock.Normalize(model.ScheduleDate.Value)
+                    ScheduleDate = Clock.Normalize(DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Local))
                 });
                 return RedirectToAction(nameof(Index));
             }
