@@ -78,12 +78,40 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             if (model.Schedule && model.ScheduleDate.HasValue)
             {
+                ViewBag.CurrentTime = Clock.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                ViewBag.CurrentTimeZone = await SettingManager.GetSettingValueAsync(TimingSettingNames.TimeZone);
+
+                ViewBag.PostedTime = model.ScheduleDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                ViewBag.PostedKind = model.ScheduleDate.Value.Kind;
+
+                var temp = model.ScheduleDate.Value;
+
+                model.ScheduleDate = DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Local);
+
+                ViewBag.SpecifiedTime = model.ScheduleDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                ViewBag.SpecifiedKind = model.ScheduleDate.Value.Kind;
+
+                model.ScheduleDate = Clock.Normalize(model.ScheduleDate.Value);
+
+                ViewBag.NormalizedTime = model.ScheduleDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                ViewBag.NormalizedKind = model.ScheduleDate.Value.Kind;
+
                 await _scheduleService.Create(new ScheduleItemDto {
                     PostId = id,
                     ChannelId = model.ChannelId,
-                    ScheduleDate = Clock.Normalize(DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Local))
+                    ScheduleDate = Clock.Normalize(DateTime.SpecifyKind(temp, DateTimeKind.Local))
                 });
-                return RedirectToAction(nameof(Index));
+                return View(new PostsSendViewModel
+                {
+                    Id = id,
+                    Post = await _postApplicationService.GetById(id),
+                    Channels = await _channelApplicationService.GetAll(
+                    new PagedAndSortedResultRequestDto
+                    {
+                        MaxResultCount = int.MaxValue
+                    })
+                });
+                // return RedirectToAction(nameof(Index));
             }
             var post = await _postApplicationService.GetById(id);
             if (post == null) return NotFound();
