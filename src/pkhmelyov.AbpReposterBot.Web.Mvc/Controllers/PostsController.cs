@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.AspNetCore.Mvc.Authorization;
 using Abp.Timing;
+using Abp.Timing.Timezone;
 using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
@@ -78,6 +79,13 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             if (model.Schedule && model.ScheduleDate.HasValue)
             {
+                var convertedDate = TimezoneHelper.ConvertTimeToUtcByIanaTimeZoneId(
+                    DateTime.SpecifyKind(model.ScheduleDate.Value, DateTimeKind.Unspecified),
+                    TimezoneHelper.WindowsToIana(
+                        await SettingManager.GetSettingValueAsync(TimingSettingNames.TimeZone)));
+
+                ViewBag.ConvertedDate = convertedDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
                 ViewBag.CurrentTime = Clock.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 ViewBag.CurrentTimeZone = await SettingManager.GetSettingValueAsync(TimingSettingNames.TimeZone);
 
@@ -99,7 +107,8 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
                 await _scheduleService.Create(new ScheduleItemDto {
                     PostId = id,
                     ChannelId = model.ChannelId,
-                    ScheduleDate = Clock.Normalize(DateTime.SpecifyKind(temp, DateTimeKind.Local))
+                    //ScheduleDate = Clock.Normalize(DateTime.SpecifyKind(temp, DateTimeKind.Local))
+                    ScheduleDate = convertedDate.Value
                 });
                 return View(new PostsSendViewModel
                 {
