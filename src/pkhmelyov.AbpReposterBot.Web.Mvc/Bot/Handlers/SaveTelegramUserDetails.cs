@@ -27,7 +27,8 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Username = user.Username,
-                    LanguageCode = user.LanguageCode
+                    LanguageCode = user.LanguageCode,
+                    IsActive = false
                 };
 
                 await _telegramUserApplicationService.CreateIfDoesNotExist(telegramUserDto);
