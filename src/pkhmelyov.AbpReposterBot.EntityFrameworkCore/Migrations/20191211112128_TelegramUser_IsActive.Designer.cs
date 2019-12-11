@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pkhmelyov.AbpReposterBot.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using pkhmelyov.AbpReposterBot.EntityFrameworkCore;
 namespace pkhmelyov.AbpReposterBot.Migrations
 {
     [DbContext(typeof(AbpReposterBotDbContext))]
-    partial class AbpReposterBotDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191211112128_TelegramUser_IsActive")]
+    partial class TelegramUser_IsActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

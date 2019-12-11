@@ -1100,3 +1100,18 @@ BEGIN
     VALUES ('20191204204411_AddedSchedule', '2.2.4-servicing-10062');
     END IF;
 END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191211112128_TelegramUser_IsActive') THEN
+    ALTER TABLE "TelegramUsers" ADD "IsActive" boolean NOT NULL DEFAULT FALSE;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20191211112128_TelegramUser_IsActive') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20191211112128_TelegramUser_IsActive', '2.2.4-servicing-10062');
+    END IF;
+END $$;
