@@ -56,8 +56,15 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
                     new MenuItemDefinition(
                         PageNames.Posts,
                         L("Posts"),
-                        url: "Posts",
+                        //url: "Posts",
                         icon: "question_answer"
+                    ).AddItem(
+                        new MenuItemDefinition(
+                            PageNames.TelegramUsers,
+                            L("TelegramUsers"),
+                            url: "TelegramUsers",
+                            icon: "people"
+                        )
                     )
                 ).AddItem( // Menu items below is just for demonstration!
                     new MenuItemDefinition(

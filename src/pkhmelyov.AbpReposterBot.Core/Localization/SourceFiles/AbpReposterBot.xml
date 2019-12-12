@@ -96,5 +96,12 @@
     <text name="Settings">Settings</text>
     <text name="Filter">Filter</text>
     <text name="Posts">Posts</text>
+    <text name="TelegramUsers">Telegram Users</text>
+    <text name="TelegramUser_IsBot">Is Bot</text>
+    <text name="TelegramUser_FirstName">First Name</text>
+    <text name="TelegramUser_LastName">Last Name</text>
+    <text name="TelegramUser_Username">Username</text>
+    <text name="TelegramUser_LanguageCode">Language Code</text>
+    <text name="TelegramUser_IsActive">Is Active</text>
   </texts>
 </localizationDictionary>
