@@ -7,5 +7,6 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Models.TelegramUsers
     {
         public PagedResultDto<TelegramUserDto> Page { get; set; }
         public int PageNumber { get; set; }
+        public int PageSize { get; set; }
     }
 }

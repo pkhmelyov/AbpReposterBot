@@ -6,7 +6,7 @@ namespace pkhmelyov.AbpReposterBot.Controllers
 {
     public abstract class AbpReposterBotControllerBase: AbpController
     {
-        protected const int PAGE_SIZE = 10;
+        protected const int PAGE_SIZE = 5;
         protected AbpReposterBotControllerBase()
         {
             LocalizationSourceName = AbpReposterBotConsts.LocalizationSourceName;
