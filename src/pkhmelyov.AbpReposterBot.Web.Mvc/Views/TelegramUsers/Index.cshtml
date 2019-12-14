@@ -1,14 +1,11 @@
-@using Abp.Application.Services.Dto;
-
-@using pkhmelyov.AbpReposterBot.Posts.Dtos
 @using pkhmelyov.AbpReposterBot.Web.Mvc.Models.TelegramUsers
 @using pkhmelyov.AbpReposterBot.Web.Startup
-
 
 @model TelegramUsersIndexViewModel
 
 @{
     ViewBag.CurrentPageName = PageNames.TelegramUsers;
+    Func<int, string> buildPageUrl = (page => Url.Action("Index", "TelegramUsers", new { page }));
 }
 
 <div class="row clearfix">
@@ -43,83 +40,7 @@
                         }
                     </tbody>
                 </table>
-                @if((float) Model.Page.TotalCount / Model.Page.Items.Count > 1)
-                {
-                    int pagesCount = Model.Page.TotalCount / Model.PageSize + Model.Page.TotalCount % Model.PageSize;
-                    bool isFirstPage = Model.PageNumber == 1;
-                    bool possibleGoBack = Model.PageNumber > 1;
-                    bool possibleGoForward = Model.PageNumber < pagesCount;
-                    bool isLastPage = Model.PageNumber == pagesCount;
-                    int firstPageToDisplay = Model.PageNumber - 2;
-                    firstPageToDisplay = firstPageToDisplay < 1 ? 1 : firstPageToDisplay;
-                    int lastPageToDisplay = Model.PageNumber + 2;
-                    lastPageToDisplay = lastPageToDisplay > pagesCount ? pagesCount : lastPageToDisplay;
-
-                    <ul class="pagination">
-                        <li class="@(!isFirstPage ? "waves-effect" : "disabled")">
-                            @if(!isFirstPage)
-                            {
-                                <a asp-controller="TelegramUsers" asp-action="Index" asp-route-page="1">
-                                    <i class="material-icons">first_page</i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#">
-                                    <i class="material-icons">first_page</i>
-                                </a>
-                            }
-                        </li>
-                        <li class="@(possibleGoBack ? "waves-effect" : "disabled")">
-                            @if(possibleGoBack)
-                            {
-                                <a asp-controller="TelegramUsers" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)">
-                                    <i class="material-icons">chevron_left</i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#">
-                                    <i class="material-icons">chevron_left</i>
-                                </a>
-                            }
-                        </li>
-                        @for(int i = firstPageToDisplay; i <= lastPageToDisplay; i++)
-                        {
-                            <li class="@(i == Model.PageNumber ? "active" : "waves-effect")">
-                                <a asp-controller="TelegramUsers" asp-action="Index" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-                        <li class="@(possibleGoForward ? "waves-effect" : "disabled")">
-                            @if(possibleGoForward)
-                            {
-                                <a asp-controller="TelegramUsers" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)">
-                                    <i class="material-icons">chevron_right</i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#">
-                                    <i class="material-icons">chevron_right</i>
-                                </a>
-                            }
-                        </li>
-                        <li class="@(!isLastPage ? "waves-effect" : "disabled")">
-                            @if(!isLastPage)
-                            {
-                                <a asp-controller="TelegramUsers" asp-action="Index" asp-route-page="@pagesCount">
-                                    <i class="material-icons">last_page</i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#">
-                                    <i class="material-icons">last_page</i>
-                                </a>
-                            }
-                        </li>
-                    </ul>
-                }
+                <pagination total-items-count="Model.Page.TotalCount" page-size="Model.PageSize" current-page-number="Model.PageNumber" build-url="buildPageUrl" />
             </div>
         </div>
     </div>
