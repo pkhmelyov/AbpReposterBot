@@ -12,7 +12,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.TagHelpers
         public Func<int, string> BuildUrl { get; set; }
 
         private bool ShouldBeShown => ((float) TotalItemsCount) / PageSize > 1;
-        private int PagesCount => TotalItemsCount / PageSize + TotalItemsCount % PageSize;
+        private int PagesCount => TotalItemsCount / PageSize + (TotalItemsCount % PageSize > 0 ? 1 : 0);
         private bool IsFirstPage => CurrentPageNumber == 1;
         private bool PossibleGoBack => CurrentPageNumber > 1;
         private bool PossibleGoForward => CurrentPageNumber < PagesCount;
