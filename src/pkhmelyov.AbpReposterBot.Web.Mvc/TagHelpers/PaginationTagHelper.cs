@@ -33,22 +33,22 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.TagHelpers
                 return x > PagesCount ? PagesCount : x;
             }
         }
-        private string FirstPageClass => !IsFirstPage ? "waves-effect" : "disabled";
-        private string PreviousPageClass => PossibleGoBack ? "waves-effect" : "disabled";
-        private string NthPageClass(int i) => CurrentPageNumber != i ? "waves-effect" : "active";
-        private string NextPageClass => PossibleGoForward ? "waves-effect" : "disabled";
-        private string LastPageClass => !IsLastPage ? "waves-effect" : "disabled";
+        private string FirstPageClass => !IsFirstPage ? "" : "disabled";
+        private string PreviousPageClass => PossibleGoBack ? "" : "disabled";
+        private string NthPageClass(int i) => CurrentPageNumber != i ? "" : "active";
+        private string NextPageClass => PossibleGoForward ? "" : "disabled";
+        private string LastPageClass => !IsLastPage ? "" : "disabled";
         private string FirstPageLink => !IsFirstPage
-            ? $@"<a href=""{BuildUrl(1)}""><i class=""material-icons"">first_page</i></a>"
+            ? $@"<a href=""{BuildUrl(1)}"" class=""waves-effect""><i class=""material-icons"">first_page</i></a>"
             : @"<a href=""#""><i class=""material-icons"">first_page</i></a>";
         private string PreviousPageLink => PossibleGoBack
-            ? $@"<a href=""{BuildUrl(CurrentPageNumber - 1)}""><i class=""material-icons"">chevron_left</i></a>"
-            : @"<a href=""#""><i class=""material-icons"">chevron_left</i></a>";
+            ? $@"<a href=""{BuildUrl(CurrentPageNumber - 1)}"" class=""waves-effect"" style=""height: 32px;""><i class=""material-icons"" style=""position: relative; bottom: 2px;"">chevron_left</i></a>"
+            : @"<a href=""#"" style=""height: 32px;""><i class=""material-icons"" style=""position: relative; bottom: 2px;"">chevron_left</i></a>";
         private string NextPageLink => PossibleGoForward
-            ? $@"<a href=""{BuildUrl(CurrentPageNumber + 1)}""><i class=""material-icons"">chevron_right</i></a>"
-            : @"<a href=""#""><i class=""material-icons"">chevron_right</i></a>";
+            ? $@"<a href=""{BuildUrl(CurrentPageNumber + 1)}"" class=""waves-effect"" style=""height: 32px;""><i class=""material-icons"" style=""position: relative; bottom: 2px;"">chevron_right</i></a>"
+            : @"<a href=""#"" style=""height: 32px;""><i class=""material-icons"" style=""position: relative; bottom: 2px;"">chevron_right</i></a>";
         private string LastPageLink => !IsLastPage
-            ? $@"<a href=""{BuildUrl(PagesCount)}""><i class=""material-icons"">last_page</i></a>"
+            ? $@"<a href=""{BuildUrl(PagesCount)}"" class=""waves-effect""><i class=""material-icons"">last_page</i></a>"
             : @"<a href=""#""><i class=""material-icons"">last_page</i></a>";
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -62,6 +62,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.TagHelpers
             output.TagMode = TagMode.StartTagAndEndTag;
             output.TagName = "ul";
             output.Attributes.Add("class", "pagination");
+            output.PreElement.SetHtmlContent("<nav>");
             output.PreContent.SetHtmlContent($@"
                 <li class=""{FirstPageClass}"">{FirstPageLink}</li>
                 <li class=""{PreviousPageClass}"">{PreviousPageLink}</li>
@@ -69,13 +70,14 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.TagHelpers
             for(int i = FirstPageToDisplay; i <= LastPageToDisplay; i++)
             {
                 output.Content.AppendHtml($@"
-                    <li class=""{NthPageClass(i)}""><a href=""{BuildUrl(i)}"">{i}</a></li>
+                    <li class=""{NthPageClass(i)}""><a href=""{BuildUrl(i)}"" class=""waves-effect"">{i}</a></li>
                 ");
             }
             output.PostContent.SetHtmlContent($@"
                 <li class=""{NextPageClass}"">{NextPageLink}</li>
                 <li class=""{LastPageClass}"">{LastPageLink}</li>
             ");
+            output.PostElement.SetHtmlContent("</nav>");
         }
     }
 }
