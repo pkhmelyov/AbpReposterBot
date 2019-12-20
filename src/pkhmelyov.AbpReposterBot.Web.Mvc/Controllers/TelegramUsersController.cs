@@ -43,5 +43,48 @@ namespace pkhmelyov.AbpReposterBot.Web.Controllers
             var model = await _telegramUserService.Get(new EntityDto<long>(id));
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Activate(long id)
+        {
+            var user = await _telegramUserService.Get(new EntityDto<long>(id));
+            user.IsActive = true;
+            await _telegramUserService.Update(user);
+            return RedirectToAction("Edit", new { id = user.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deactivate(long id)
+        {
+            var user = await _telegramUserService.Get(new EntityDto<long>(id));
+            user.IsActive = false;
+            await _telegramUserService.Update(user);
+            return RedirectToAction("Edit", new { id = user.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsNotBot(long id)
+        {
+            var user = await _telegramUserService.Get(new EntityDto<long>(id));
+            user.IsBot = false;
+            await _telegramUserService.Update(user);
+            return RedirectToAction("Edit", new { id = user.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsBot(long id)
+        {
+            var user = await _telegramUserService.Get(new EntityDto<long>(id));
+            user.IsBot = true;
+            await _telegramUserService.Update(user);
+            return RedirectToAction("Edit", new { id = user.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _telegramUserService.Delete(new EntityDto<long>(id));
+            return RedirectToAction("Index");
+        }
     }
 }

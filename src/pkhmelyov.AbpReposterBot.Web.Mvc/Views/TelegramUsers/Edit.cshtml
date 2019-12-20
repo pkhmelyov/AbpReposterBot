@@ -1,0 +1,95 @@
+@using pkhmelyov.AbpReposterBot.Posts.Dtos
+@using pkhmelyov.AbpReposterBot.Web.Startup
+
+@model TelegramUserDto
+
+@{
+    ViewBag.CurrentPageName = PageNames.TelegramUsers;
+}
+
+@section scripts {
+    <script>
+        $(function(){
+            $("#deleteUserBtn").click(function(e){
+                if(!confirm("Are you sure?")) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+<div class="row clearfix">
+    <div class="col s12">
+        <div class="card">
+            <div class="header">
+                <h2>@L("TelegramUsers")</h2>
+            </div>
+            <div class="body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        @Model.FirstName @Model.LastName
+                    </li>
+                    <li class="list-group-item">
+                        <b>username:</b>
+                        @Model.Username
+                    </li>
+                    <li class="list-group-item">
+                        <b>Language Code:</b>
+                        @Model.LanguageCode
+                    </li>
+                    <li class="list-group-item">
+                        @if(Model.IsActive) {
+                            <form method="post" asp-action="Deactivate" asp-route-id="@Model.Id">
+                                <button type="submit" class="btn btn-block btn-lg btn-warning waves-effect">
+                                    <i class="material-icons">check_box</i>
+                                    <span style="font-size: 20px;">Deactivate</span>
+                                </button>
+                            </form>
+                        } else {
+                            <form method="post" asp-action="Activate" asp-route-id="@Model.Id">
+                                <button type="submit" class="btn btn-block btn-lg btn-warning waves-effect">
+                                    <i class="material-icons">check_box_outline_blank</i>
+                                    <span style="font-size: 20px;">Activate</span>
+                                </button>
+                            </form>
+                        }
+                    </li>
+                    <li class="list-group-item">
+                        @if(Model.IsBot) {
+                            <form method="post" asp-action="MarkAsNotBot" asp-route-id="@Model.Id">
+                                <button type="submit" class="btn btn-block btn-lg btn-success waves-effect">
+                                    <i class="material-icons">check_box</i>
+                                    <span style="font-size: 20px;">Mark as not Bot</span>
+                                </button>
+                            </form>
+                        } else {
+                            <form method="post" asp-action="MarkAsBot" asp-route-id="@Model.Id">
+                                <button type="submit" class="btn btn-block btn-lg btn-success waves-effect">
+                                    <i class="material-icons">check_box_outline_blank</i>
+                                    <span style="font-size: 20px;">Mark as Bot</span>
+                                </button>
+                            </form>
+                        }
+                    </li>
+                    <li class="list-group-item">
+                        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+                            @{
+                                var disabled = Model.IsActive ? @"disabled=""disabled""" : "";
+                            }
+                            <button id="deleteUserBtn" type="submit" class="btn btn-block btn-danger btn-lg waves-effect" @disabled>
+                                <i class="material-icons">warning</i>
+                                <span style="font-size: 20px;">Delete</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                <div class="right">
+                    <a asp-action="Index" class="waves-effect btn btn-primary">Back To List</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
