@@ -96,6 +96,7 @@
     <text name="Settings">Settings</text>
     <text name="Filter">Filter</text>
     <text name="Posts">Posts</text>
+    <text name="Reposter">Reposter</text>
     <text name="TelegramUsers">Telegram Users</text>
     <text name="TelegramUser_IsBot">Is Bot</text>
     <text name="TelegramUser_FirstName">First Name</text>
