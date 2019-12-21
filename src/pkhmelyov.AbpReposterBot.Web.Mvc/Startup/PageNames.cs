@@ -8,6 +8,7 @@
         public const string Users = "Users";
         public const string Roles = "Roles";
         public const string TelegramUsers = "TelegramUsers";
+        public const string KnownChannels = "KnownChannels";
         public const string Posts = "Posts";
         public const string Reposter = "Reposter";
     }

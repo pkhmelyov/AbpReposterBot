@@ -98,11 +98,14 @@
     <text name="Posts">Posts</text>
     <text name="Reposter">Reposter</text>
     <text name="TelegramUsers">Telegram Users</text>
+    <text name="KnownChannels">Known Channels</text>
     <text name="TelegramUser_IsBot">Is Bot</text>
     <text name="TelegramUser_FirstName">First Name</text>
     <text name="TelegramUser_LastName">Last Name</text>
     <text name="TelegramUser_Username">Username</text>
     <text name="TelegramUser_LanguageCode">Language Code</text>
     <text name="TelegramUser_IsActive">Is Active</text>
+    <text name="Channel_Title">Title</text>
+    <text name="Channel_Own">Own</text>
   </texts>
 </localizationDictionary>

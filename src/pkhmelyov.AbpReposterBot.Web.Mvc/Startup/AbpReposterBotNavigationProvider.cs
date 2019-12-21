@@ -55,14 +55,18 @@ namespace pkhmelyov.AbpReposterBot.Web.Startup
                 ).AddItem(
                     new MenuItemDefinition(
                         PageNames.Reposter,
-                        L("Reposter"),
-                        icon: "question_answer"
+                        L("Reposter")
                     ).AddItem(
                         new MenuItemDefinition(
                             PageNames.TelegramUsers,
                             L("TelegramUsers"),
-                            url: "TelegramUsers",
-                            icon: "people"
+                            url: "TelegramUsers"
+                        )
+                    ).AddItem(
+                        new MenuItemDefinition(
+                            PageNames.KnownChannels,
+                            L("KnownChannels"),
+                            url: "KnownChannels"
                         )
                     ).AddItem(
                         new MenuItemDefinition(
