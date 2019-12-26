@@ -1,0 +1,26 @@
+@using pkhmelyov.AbpReposterBot.Posts.Dtos
+@using pkhmelyov.AbpReposterBot.Web.Startup
+
+@model ChannelDto
+
+@{
+    ViewBag.CurrentPageName = PageNames.KnownChannels;
+    ViewBag.PageHeader = L("TelegramUsers");
+}
+
+<form method="post" asp-action="Edit" asp-route-id="@Model.Id">
+    <div class="row clearfix">
+        <div class="col s12">
+            <div class="form-group">
+                <div class="form-line">
+                    <input asp-for="Title" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <input type="submit" value="Save" class="btn waves-effect btn-primary" />
+        <a asp-action="Index" class="waves-effect btn btn-default">Back To List</a>
+    </div>
+    <div class="clearfix"></div>
+</form>
