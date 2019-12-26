@@ -33,5 +33,11 @@ namespace pkhmelyov.AbpReposterBot.Web.Controllers
             };
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(long id)
+        {
+            var model = await _channelService.Get(new EntityDto<long>(id));
+            return View(model);
+        }
     }
 }
