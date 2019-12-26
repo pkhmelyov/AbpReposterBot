@@ -5,43 +5,33 @@
 
 @{
     ViewBag.CurrentPageName = PageNames.TelegramUsers;
+    ViewBag.PageHeader = L("TelegramUsers");
     Func<int, string> buildPageUrl = (page => Url.Action("Index", "TelegramUsers", new { page }));
 }
 
-<div class="row clearfix">
-    <div class="col s12">
-        <div class="card">
-            <div class="header">
-                <h2>@L("TelegramUsers")</h1>
-            </div>
-            <div class="body table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>@L("TelegramUser_IsBot")</th>
-                            <th>@L("TelegramUser_FirstName")</th>
-                            <th>@L("TelegramUser_LastName")</th>
-                            <th>@L("TelegramUser_Username")</th>
-                            <th>@L("TelegramUser_LanguageCode")</th>
-                            <th>@L("TelegramUser_IsActive")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(var item in Model.Page.Items)
-                        {
-                            <tr>
-                                <td><fancy-checkbox checked="item.IsBot" color="green" /></td>
-                                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.FirstName</a></td>
-                                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.LastName</a></td>
-                                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.Username</a></td>
-                                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.LanguageCode</a></td>
-                                <td><fancy-checkbox checked="item.IsActive" color="orange" /></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <pagination total-items-count="Model.Page.TotalCount" page-size="Model.PageSize" current-page-number="Model.PageNumber" build-url="buildPageUrl" />
-            </div>
-        </div>
-    </div>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@L("TelegramUser_IsBot")</th>
+            <th>@L("TelegramUser_FirstName")</th>
+            <th>@L("TelegramUser_LastName")</th>
+            <th>@L("TelegramUser_Username")</th>
+            <th>@L("TelegramUser_LanguageCode")</th>
+            <th>@L("TelegramUser_IsActive")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Page.Items)
+        {
+            <tr>
+                <td><fancy-checkbox checked="item.IsBot" color="green" /></td>
+                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.FirstName</a></td>
+                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.LastName</a></td>
+                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.Username</a></td>
+                <td><a asp-controller="TelegramUsers" asp-action="Edit" asp-route-id="@item.Id">@item.LanguageCode</a></td>
+                <td><fancy-checkbox checked="item.IsActive" color="orange" /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<pagination total-items-count="Model.Page.TotalCount" page-size="Model.PageSize" current-page-number="Model.PageNumber" build-url="buildPageUrl" />

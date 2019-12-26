@@ -1,0 +1,24 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row clearfix">
+    <div class="col s12">
+        <div class="card">
+            <div class="header">
+                <h2>@ViewBag.PageHeader</h2>
+            </div>
+            <div class="body">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles {
+    @RenderSection("styles", required: false)
+}
+
+@section scripts {
+    @RenderSection("scripts", required: false)
+}

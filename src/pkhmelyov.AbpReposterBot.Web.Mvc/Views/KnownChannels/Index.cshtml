@@ -5,35 +5,25 @@
 
 @{
     ViewBag.CurrentPageName = PageNames.KnownChannels;
+    ViewBag.PageHeader = L("KnownChannels");
     Func<int, string> buildPageUrl = page => Url.Action("Index", "KnownChannels", new { page });
 }
 
-<div class="row clearfix">
-    <div class="col s12">
-        <div class="card">
-            <div class="header">
-                <h2>@L("KnownChannels")</h2>
-            </div>
-            <div class="body table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>@L("Channel_Title")</th>
-                            <th>@L("Channel_Own")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(var item in Model.Page.Items)
-                        {
-                            <tr>
-                                <td><a asp-controller="KnownChannels" asp-action="Edit" asp-route-id="@item.Id">@item.Title</a></td>
-                                <td><fancy-checkbox checked="item.Own" color="green" /></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <pagination total-items-count="Model.Page.TotalCount" page-size="Model.PageSize" current-page-number="Model.PageNumber" build-url="buildPageUrl" />
-            </div>
-        </div>
-    </div>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@L("Channel_Title")</th>
+            <th>@L("Channel_Own")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Page.Items)
+        {
+            <tr>
+                <td><a asp-controller="KnownChannels" asp-action="Edit" asp-route-id="@item.Id">@item.Title</a></td>
+                <td><fancy-checkbox checked="item.Own" color="green" /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<pagination total-items-count="Model.Page.TotalCount" page-size="Model.PageSize" current-page-number="Model.PageNumber" build-url="buildPageUrl" />
