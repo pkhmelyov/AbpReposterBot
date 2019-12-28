@@ -4,7 +4,8 @@ using Abp.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
-using pkhmelyov.AbpReposterBot.Web.Mvc.Models.KnownChannels;
+using pkhmelyov.AbpReposterBot.Posts.Dtos;
+using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Common;
 
 namespace pkhmelyov.AbpReposterBot.Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
-            var model = new KnownChannelsIndexViewModel
+            var model = new IndexViewModel<ChannelDto>
             {
                 PageSize = PAGE_SIZE,
                 PageNumber = page,

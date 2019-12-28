@@ -30,9 +30,13 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
             _scheduleService = scheduleService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            var model = await _postApplicationService.GetAll();
+            var model = await _postApplicationService.GetAll(new PagedAndSortedResultRequestDto{
+                MaxResultCount = PAGE_SIZE,
+                SkipCount = (page - 1) * PAGE_SIZE,
+                Sorting = "Id desc"
+            });
             return View(model);
         }
 
@@ -46,7 +50,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var input = ObjectMapper.Map<CreatePostInput>(model);
+                var input = ObjectMapper.Map<PostListDto>(model);
                 await _postApplicationService.Create(input);
 
                 return RedirectToAction("Index");
@@ -56,7 +60,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
 
         public async Task<IActionResult> Send(int id)
         {
-            var post = await _postApplicationService.GetById(id);
+            var post = await _postApplicationService.Get(new EntityDto(id));
             if (post == null) return RedirectToAction(nameof(Index));
             var channels = await _channelApplicationService.GetAll(
                 new PagedAndSortedResultRequestDto
@@ -91,7 +95,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Controllers
                 });
                 return RedirectToAction(nameof(Index));
             }
-            var post = await _postApplicationService.GetById(id);
+            var post = await _postApplicationService.Get(new EntityDto(id));
             if (post == null) return NotFound();
             var channel = await _channelApplicationService.Get(new EntityDto<long>(model.ChannelId));
             if (channel == null) return NotFound();

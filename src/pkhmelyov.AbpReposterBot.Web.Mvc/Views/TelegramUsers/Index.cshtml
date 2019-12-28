@@ -1,7 +1,8 @@
-@using pkhmelyov.AbpReposterBot.Web.Mvc.Models.TelegramUsers
+@using pkhmelyov.AbpReposterBot.Posts.Dtos
+@using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Common
 @using pkhmelyov.AbpReposterBot.Web.Startup
 
-@model TelegramUsersIndexViewModel
+@model IndexViewModel<TelegramUserDto>
 
 @{
     ViewBag.CurrentPageName = PageNames.TelegramUsers;

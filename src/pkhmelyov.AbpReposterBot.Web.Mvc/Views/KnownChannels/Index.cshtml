@@ -1,7 +1,8 @@
-@using pkhmelyov.AbpReposterBot.Web.Mvc.Models.KnownChannels
+@using pkhmelyov.AbpReposterBot.Posts.Dtos
+@using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Common
 @using pkhmelyov.AbpReposterBot.Web.Startup
 
-@model KnownChannelsIndexViewModel
+@model IndexViewModel<ChannelDto>
 
 @{
     ViewBag.CurrentPageName = PageNames.KnownChannels;

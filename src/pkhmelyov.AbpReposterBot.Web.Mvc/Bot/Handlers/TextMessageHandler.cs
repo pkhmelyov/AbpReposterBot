@@ -17,9 +17,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Bot.Handlers
 
         public Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
-            return _postApplicationService.Create(new CreatePostInput {
-                Body = context.Update.Message?.Text ?? context.Update.ChannelPost?.Text
-            });
+            return _postApplicationService.Create(new PostListDto { Body = context.Update.Message?.Text ?? context.Update.ChannelPost?.Text });
         }
     }
 }

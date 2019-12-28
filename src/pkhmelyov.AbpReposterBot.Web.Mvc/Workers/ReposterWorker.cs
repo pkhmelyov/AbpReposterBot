@@ -32,7 +32,7 @@ namespace pkhmelyov.AbpReposterBot.Web.Mvc.Workers
             var items = _scheduleService.GetItems(Clock.Now, 20);
             foreach (var item in items)
             {
-                var post = _postService.GetById(item.PostId).Result;
+                var post = _postService.Get(new EntityDto(item.PostId)).Result;
                 var channel = _channelService.Get(new EntityDto<long>(item.ChannelId)).Result;
                 if(post != null && (channel?.Own ?? false))
                 {
