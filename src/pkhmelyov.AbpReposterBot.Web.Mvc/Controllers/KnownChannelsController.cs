@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using pkhmelyov.AbpReposterBot.Controllers;
 using pkhmelyov.AbpReposterBot.Posts;
 using pkhmelyov.AbpReposterBot.Posts.Dtos;
+using pkhmelyov.AbpReposterBot.Web.Models.KnownChannels;
 using pkhmelyov.AbpReposterBot.Web.Mvc.Models.Common;
 
 namespace pkhmelyov.AbpReposterBot.Web.Controllers
@@ -19,15 +20,16 @@ namespace pkhmelyov.AbpReposterBot.Web.Controllers
             _channelService = channelService;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, OwnershipFilter filter = OwnershipFilter.All)
         {
-            var model = new IndexViewModel<ChannelDto>
+            var model = new IndexViewModel<FilterModel, ChannelDto>
             {
+                FilterModel = new FilterModel { Ownership = filter },
                 PageSize = PAGE_SIZE,
                 PageNumber = page,
-                Page = await _channelService.GetAll(new PagedAndSortedResultRequestDto
+                Page = await _channelService.GetAllFilteredAsync(new GetAllFilteredInput
                 {
-                    Sorting = "Title",
+                    Own = filter == OwnershipFilter.All ? null : (bool?)(filter == OwnershipFilter.Owned),
                     SkipCount = (page - 1) * PAGE_SIZE,
                     MaxResultCount = PAGE_SIZE,
                 })
@@ -39,6 +41,18 @@ namespace pkhmelyov.AbpReposterBot.Web.Controllers
         {
             var model = await _channelService.Get(new EntityDto<long>(id));
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ChannelDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            await _channelService.Update(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -10,10 +10,16 @@
 
 <form method="post" asp-action="Edit" asp-route-id="@Model.Id">
     <div class="row clearfix">
-        <div class="col s12">
+        <div class="col-sm-12">
             <div class="form-group">
                 <div class="form-line">
-                    <input asp-for="Title" />
+                    <input asp-for="Title" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="checkbox" class="filled-in" asp-for="Own" />
+                    <label asp-for="Own"></label>
                 </div>
             </div>
         </div>
